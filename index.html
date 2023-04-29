@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles/reset.css">
+    <link rel="stylesheet" href="styles/style.css">
+    <title>MakeUp G</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <header>
+        <h1>Dados Covid</h1>
+    </header>
+    <main>
+       <div class="container">
+        <section class="dados-totais">
+            <div>
+                <p>Total Confirmados</p>
+                <p class="confirmados"></p>
+            </div>
+            <div>
+                <p>Total Mortes</p>
+                <p class="mortes"></p>
+            </div>
+            <div>
+                <p>Total Recuperados</p>
+                <p class="recuperados"></p>
+            </div>
+        </section>
+
+        <section class="pizza">
+            <canvas id="meu-grafico"></canvas>
+        </section>
+       </div>
+        
+    </main>
+    
+    <script src="main.js" type="module"></script>
+</body>
+</html>
