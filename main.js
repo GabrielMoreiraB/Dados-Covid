@@ -10,6 +10,7 @@ async function getBuscaItensAPI(link){
     console.log(itens)
      showTotal(itens) 
      showPizza(itens)
+     topTen (itens)
 
 
   
@@ -50,5 +51,17 @@ function showPizza(e){
           }
         });
 
+}
 
+function topTen (e){
+    const paises = e.Countries;
+
+    let order = paises.sort((a,b) => a.TotalDeaths - b.TotalDeaths);
+    order = order.reverse();
+    order = order.slice(0, 10);
+    let paisesNome = order.map(e => e.Country);
+    let paisesValor = order.map(e => e.TotalDeaths);
+    console.log(paisesNome, paisesValor)
+
+    
 }
