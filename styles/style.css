@@ -17,6 +17,7 @@ main{
 
 section{
     padding: 1em;
+    margin: 2em;
     background-color:rgb(255, 255, 255);
     border-radius: 5px;
     box-shadow: 10px 10px 10px rgba(255, 255, 255, );
@@ -48,7 +49,3 @@ section{
     justify-content: center;
 }
 
-canvas{
-    width: 500px;
-    height: 150px;
-}

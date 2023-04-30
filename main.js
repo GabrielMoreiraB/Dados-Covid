@@ -1,5 +1,8 @@
 
+
 let endPointAPI = ` https://api.covid19api.com/summary`;
+
+let graphLinhaAPI = `https://api.covid19api.com/country/brazil?from=2021-05-01T00:00:00Z&to=2021-05-26T00:00:00Z`
 
 
 getBuscaItensAPI(endPointAPI);
@@ -7,14 +10,24 @@ getBuscaItensAPI(endPointAPI);
 async function getBuscaItensAPI(link){
     const resp = await fetch(link);
     let itens = await resp.json(); 
-    console.log(itens)
+    /* console.log(itens.Countries.find(e=> e.Country == "Brazil")
+      ) */
      showTotal(itens) 
      showPizza(itens)
      topTen (itens)
 
-
-  
 }
+
+async function getLinhaAPI(link){
+  const resp = await fetch(link);
+  let item = await resp.json(); 
+  console.log(item)
+}
+getLinhaAPI(graphLinhaAPI)
+
+
+
+
 
 function showTotal(e){
     const confirmados = document.querySelector('.confirmados');
@@ -48,6 +61,20 @@ function showPizza(e){
                 'rgba(255, 206, 86, 0.6)'
               ]
             }]
+          },
+          options:{
+            responsive: true,
+            plugins: {
+              legend: {
+                position: 'top'
+              },
+              title: {
+                display: true,
+                text: "Distribuição de novos casos"
+              }
+    
+            }
+    
           }
         });
 
@@ -61,7 +88,34 @@ function topTen (e){
     order = order.slice(0, 10);
     let paisesNome = order.map(e => e.Country);
     let paisesValor = order.map(e => e.TotalDeaths);
-    console.log(paisesNome, paisesValor)
+
+    const canvasBarra = document.getElementById('meu-grafico2');
+    const ctxBarra = canvasBarra.getContext('2d');
+    const meuGraficoBarra = new Chart(ctxBarra, {
+      type: 'bar',
+      data: {
+        labels: paisesNome,
+        datasets:[{
+          data: paisesValor,
+          backgroundColor: "#00f0f0"
+        }]
+
+      },
+      options:{
+        responsive: true,
+        plugins: {
+          legend: {
+            position: 'top'
+          },
+          title: {
+            display: true,
+            text: "Total de mortes por pais - top 10"
+          }
+
+        }
+
+      }
+    })
 
     
 }
