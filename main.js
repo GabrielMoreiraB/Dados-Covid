@@ -1,9 +1,4 @@
-
-
 let endPointAPI = ` https://api.covid19api.com/summary`;
-
-let graphLinhaAPI = `https://api.covid19api.com/country/brazil?from=2021-05-01T00:00:00Z&to=2021-05-26T00:00:00Z`
-
 
 getBuscaItensAPI(endPointAPI);
 
@@ -17,16 +12,6 @@ async function getBuscaItensAPI(link){
      topTen (itens)
 
 }
-
-async function getLinhaAPI(link){
-  const resp = await fetch(link);
-  let item = await resp.json(); 
-  console.log(item)
-}
-getLinhaAPI(graphLinhaAPI)
-
-
-
 
 
 function showTotal(e){
@@ -115,7 +100,82 @@ function topTen (e){
         }
 
       }
-    })
+    }) 
+}
+
+
+
+    let dtAte = '2021-05-26'
+    let dtDe = '2021-05-01'
+    let paisLinha = 'brazil'
+    let tipo = 'Deaths'
 
     
+  const aplicar = document.getElementById('formulario');
+
+  aplicar.addEventListener('submit', (e) => {
+    e.preventDefault()
+    dtAte = document.getElementById('dtAte').value;
+    dtDe = document.getElementById('dtDe').value;
+    paisLinha = document.getElementById('paisLinha').value;
+    tipo = document.getElementById('tipo').value;
+    console.log( tipo)
+    showLinha ()
+  })
+
+async function showLinha () {
+  let dadosGr = []
+  let graphLinhaAPI = `https://api.covid19api.com/country/${paisLinha}?from=${dtDe}T00:00:00Z&to=${dtAte}T00:00:00Z`
+  const resp = await fetch(graphLinhaAPI);
+  let item = await resp.json();
+  console.log(item);
+
+  let arrayDados = item.map(e => e[tipo]);
+  let dias = item.map(e => e.Date);
+  dias = dias.slice(1).map(d=>d.slice(0, 10));
+  console.log(dias);
+
+  for(let i = 1; i<arrayDados.length; i++){
+    dadosGr.push((+arrayDados[i])-(+arrayDados[i-1]))
+  }
+  console.log(dadosGr);
+
+  let media = dadosGr.reduce((acumulador, valorAtual) => acumulador + valorAtual, 0)/dadosGr.length;
+console.log(media);
+
+
+const canvas = document.getElementById('meu-grafico3');
+const ctx = canvas.getContext('2d');
+
+  new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: dias,
+      datasets: [
+        {
+          label: 'Valores Diarios',
+          data: dadosGr,
+          fill: false,
+          borderColor: 'rgb(255, 99, 132)',
+          tension: 0.1
+        },
+        {
+          label: 'Média',
+          data: Array(dadosGr.length).fill(media),
+          fill: false,
+          borderColor: 'rgb(54, 162, 235)',
+          tension: 0.1
+        }
+      ]
+    },
+    options: {
+      title: {
+        display: true,
+        text: 'Curva diária de COVID-19'
+      },
+      maintainAspectRatio: false
+    }
+  })
 }
+
+showLinha ()

@@ -49,3 +49,31 @@ section{
     justify-content: center;
 }
 
+.linha{
+    display: flex;
+    align-items:center;
+    justify-content: center;
+}
+
+form{
+    display: flex;
+    flex-direction: column;
+    width: 20vw;
+}
+
+.filtro-title{
+    border-bottom: 1px solid black;
+    margin-bottom: 1em;
+}
+input{
+    margin-bottom: 2em;
+}
+
+.gra-linha{
+    width: 60vw;
+}
+
+.meu-grafico3{
+    width: 700px;
+    height: 400px;
+}
