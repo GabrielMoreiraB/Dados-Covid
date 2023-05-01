@@ -39,7 +39,7 @@ section{
     justify-content: center;
 }
 
-.dados-totais div{
+.dados-totais div, .totPais{
     padding: 1em;
     margin: 1em;
     background-color: aqua;
@@ -65,7 +65,7 @@ form{
     border-bottom: 1px solid black;
     margin-bottom: 1em;
 }
-input{
+input, select{
     margin-bottom: 2em;
 }
 
@@ -73,7 +73,20 @@ input{
     width: 60vw;
 }
 
-.meu-grafico3{
+
+#meu-grafico3{
     width: 700px;
     height: 400px;
+}
+
+span {
+    font-size: .6em;
+    color: #545454;
+}
+
+.totPaisContainer{
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+
 }

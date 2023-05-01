@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="styles/reset.css">
     <link rel="stylesheet" href="styles/style.css">
-    <title>MakeUp G</title>
+    <title>Dados Covid</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
@@ -44,13 +44,16 @@
                 <p class="filtro-title">Filtro</p>
                 <form action="" id="formulario">
                     <label for="dtDe">Data início</label>
+                    <span class="spandata">Para fator de correção, coloque um dia anterior ao desejado na busca! Ex: consulta para o dia 02/05/2021, inserir o valor 01/05/2021</span>
                     <input type="date" name="dtDe" id="dtDe">
 
                     <label for="dtAte">Data fim</label>
                     <input type="date" name="dtAte" id="dtAte">
 
                     <label for="paisLinha">País</label>
-                    <input type="text" name="paisLinha" id="paisLinha">
+                    <select id="paisLinha">
+                        <option value="">Selecione uma opção</option>
+                      </select>
 
                     <label for="tipo">Dados</label>
                     <select name="tipo" id="tipo">
@@ -65,9 +68,30 @@
 
             <div class="gra-linha">
                 <canvas id="meu-grafico3"></canvas>
+
+                
             </div>
 
+            
         </section>
+
+        <section class="totPaisContainer">
+            <div class="totPais">
+                <p>Total de Confirmados</p>
+                <p class="confirmadosP"></p>
+            </div>
+
+            <div class="totPais">
+                <p>Total de Recuperados</p>
+                <p class="recuperadosP"></p>
+            </div>
+
+            <div class="totPais">
+                <p>Total de Mortes</p>
+                <p class="mortesP"></p>
+            </div>
+        </section>
+
         
     </main>
     

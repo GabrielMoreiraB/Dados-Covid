@@ -1,16 +1,50 @@
 let endPointAPI = ` https://api.covid19api.com/summary`;
 
+let dtAte = '2021-05-26'
+let dtDe = '2021-05-01'
+let paisLinha = 'Brazil'
+let tipo = 'Deaths'
+
 getBuscaItensAPI(endPointAPI);
+showTotPais (endPointAPI);
+
+async function opitionPais() {
+  const resp = await fetch('https://api.covid19api.com/countries');
+    let itens = await resp.json(); 
+}
 
 async function getBuscaItensAPI(link){
     const resp = await fetch(link);
     let itens = await resp.json(); 
-    /* console.log(itens.Countries.find(e=> e.Country == "Brazil")
+    /* console.log(itens.Countries.find(e=> e.Country == paisLinha)
       ) */
+
+      const select = document.getElementById('paisLinha');
+
+      itens.Countries.map((opcao) => {
+        const option = document.createElement('option');
+        option.value = opcao.Country;
+        option.text = opcao.Country;
+        select.add(option);
+      });
+
      showTotal(itens) 
      showPizza(itens)
      topTen (itens)
 
+}
+
+async function showTotPais (link){
+    const resp = await fetch(link);
+    let itens = await resp.json(); 
+    let paisSelect = itens.Countries.find(e=> e.Country == paisLinha);
+    /* console.log(paisSelect) */
+    const confirmadosP = document.querySelector('.confirmadosP');
+    const mortesP = document.querySelector('.mortesP');
+    const recuperadosP = document.querySelector('.recuperadosP');
+    confirmadosP.innerHTML =  paisSelect.TotalConfirmed
+    mortesP.innerHTML = paisSelect.TotalDeaths
+    recuperadosP.innerHTML =(+paisSelect.TotalConfirmed)-(+paisSelect.TotalDeaths) 
 }
 
 
@@ -105,54 +139,52 @@ function topTen (e){
 
 
 
-    let dtAte = '2021-05-26'
-    let dtDe = '2021-05-01'
-    let paisLinha = 'brazil'
-    let tipo = 'Deaths'
 
-    
-  const aplicar = document.getElementById('formulario');
+const aplicar = document.getElementById('formulario');
 
-  aplicar.addEventListener('submit', (e) => {
-    e.preventDefault()
-    dtAte = document.getElementById('dtAte').value;
-    dtDe = document.getElementById('dtDe').value;
-    paisLinha = document.getElementById('paisLinha').value;
-    tipo = document.getElementById('tipo').value;
-    console.log( tipo)
-    showLinha ()
-  })
+aplicar.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  dtAte = document.getElementById('dtAte').value;
+  dtDe = document.getElementById('dtDe').value;
+  paisLinha = document.getElementById('paisLinha').value;
+  paisLinha = paisLinha.replace(/\s+/g, '-');
+  console.log(paisLinha)
+  tipo = document.getElementById('tipo').value;
+  await showLinha();
+  await showTotPais (endPointAPI);
+});
 
-async function showLinha () {
+
+
+async function showLinha() {
   let dadosGr = []
   let graphLinhaAPI = `https://api.covid19api.com/country/${paisLinha}?from=${dtDe}T00:00:00Z&to=${dtAte}T00:00:00Z`
+  console.log(graphLinhaAPI)
   const resp = await fetch(graphLinhaAPI);
   let item = await resp.json();
-  console.log(item);
-
+  /* console.log(item) */
   let arrayDados = item.map(e => e[tipo]);
   let dias = item.map(e => e.Date);
-  dias = dias.slice(1).map(d=>d.slice(0, 10));
-  console.log(dias);
+  dias = dias.slice(1).map(d => d.slice(0, 10));
 
-  for(let i = 1; i<arrayDados.length; i++){
-    dadosGr.push((+arrayDados[i])-(+arrayDados[i-1]))
+  for (let i = 1; i < arrayDados.length; i++) {
+    dadosGr.push((+arrayDados[i]) - (+arrayDados[i - 1]))
   }
-  console.log(dadosGr);
 
-  let media = dadosGr.reduce((acumulador, valorAtual) => acumulador + valorAtual, 0)/dadosGr.length;
-console.log(media);
+  let media = dadosGr.reduce((acumulador, valorAtual) => acumulador + valorAtual, 0) / dadosGr.length;
 
+  const canvas = document.getElementById('meu-grafico3');
+  const ctx = canvas.getContext('2d');
 
-const canvas = document.getElementById('meu-grafico3');
-const ctx = canvas.getContext('2d');
+  if (window.graficoLinha) {
+    window.graficoLinha.destroy();
+  }
 
-  new Chart(ctx, {
+  window.graficoLinha = new Chart(ctx, {
     type: 'line',
     data: {
       labels: dias,
-      datasets: [
-        {
+      datasets: [{
           label: 'Valores Diarios',
           data: dadosGr,
           fill: false,
@@ -178,4 +210,4 @@ const ctx = canvas.getContext('2d');
   })
 }
 
-showLinha ()
+showLinha();
